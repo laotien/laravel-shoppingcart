@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('admin.app', ['pageTitle' => 'Category'])
 @section('content')
     @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.index')])
 

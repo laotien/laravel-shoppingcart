@@ -53,7 +53,6 @@
         }
 
         public function getItems($params = null, $options = null)
-        : array
         {
             $result = null;
             // Get all category form

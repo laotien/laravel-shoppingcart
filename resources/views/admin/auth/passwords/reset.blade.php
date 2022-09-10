@@ -1,4 +1,4 @@
-@extends('layouts.master-without-nav')
+@extends('admin.auth.master', ['pageTitle' => 'Update Password'])
 @section('title')
     @lang('translation.reset-mail')
 @endsection
@@ -54,10 +54,10 @@
                                 <div class="p-2">
                                     <form class="form-horizontal" method="POST" action="{{ route('password.update') }}">
                                         @csrf
-                                        <input type="hidden" name="token" value="{{ $token }}">
+                                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
                                         <div class="mb-3">
                                             <label for="useremail" class="form-label">Email</label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" name="email" placeholder="Enter email" value="{{ $email ?? old('email') }}" id="email">
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" name="email" placeholder="Enter email" value="{{ $request->email ?? old('email') }}" id="email">
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

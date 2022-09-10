@@ -1,7 +1,7 @@
 @php
-    $statusValue = ['' => 'Select status', 'publish' => config('temp.template.status.publish.name'), 'draft' => config('temp.template.status.draft.name')];
+    $statusValue = ['publish' => config('temp.template.status.publish.name'), 'draft' => config('temp.template.status.draft.name')];
 @endphp
-@extends('admin.app')
+@extends('admin.app', ['pageTitle' => 'Create new category'])
 @section('content')
     @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.created')])
     @include('admin.components.notify')
@@ -18,7 +18,12 @@
                 <div class="card-body">
                     <div class="mb-3">
                         {!! Form::label('name', __('Name'), ['class' => 'form-label']) !!}
-                        {!! Form::text('name', old('name', @$item['name']), ['class' => 'form-control', 'placeholder' => 'Enter category name', 'required']) !!}
+                        {!! Form::text('name', old('name', @$item['name']), ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : null), 'placeholder' => 'Enter category name']) !!}
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         {!! Form::label('slug', __('Slug'), ['class' => 'form-label']) !!}

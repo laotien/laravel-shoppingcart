@@ -1,7 +1,4 @@
-@extends('layouts.master-without-nav')
-@section('title')
-@lang('translation.reset-mail')
-@endsection
+@extends('admin.auth.master', ['pageTitle' => 'Reset Password'])
 @section('content')
         <div class="auth-page">
             <div class="container-fluid p-0">
@@ -17,8 +14,8 @@
                                                     <div class="d-flex flex-column h-100">
                                                         <div class="mb-4 mb-md-5">
                                                             <a href="/index" class="d-block auth-logo">
-                                                                <img src="{{URL::asset('assets/images/logo-dark.png')}}" alt="" height="22" class="auth-logo-dark me-start">
-                                                                <img src="{{URL::asset('assets/images/logo-light.png')}}" alt="" height="22" class="auth-logo-light me-start">
+                                                                <img src="{{URL::asset('admin/assets/images/logo-dark.png')}}" alt="" height="22" class="auth-logo-dark me-start">
+                                                                <img src="{{URL::asset('admin/assets/images/logo-light.png')}}" alt="" height="22" class="auth-logo-light me-start">
                                                             </a>
                                                         </div>
                                                         <div class="auth-content my-auto">
@@ -69,7 +66,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="mt-4 text-center">
-                                                            <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Borex   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                                            <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Borex   . Crafted with <i class="mdi mdi-heart text-danger"></i> by LaoTien</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -89,7 +86,7 @@
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-xl-8">
                                     <div class="mt-4">
-                                        <img src="{{URL::asset('./assets/images/login-img.png')}}" class="img-fluid" alt="">
+                                        <img src="{{URL::asset('admin/assets/images/login-img.png')}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="p-0 p-sm-4 px-xl-0 py-5">
                                         <div id="reviewcarouselIndicators" class="carousel slide auth-carousel" data-bs-ride="carousel">
@@ -154,5 +151,5 @@
 
 @endsection
 @section('script')
-    <script src="{{ URL::asset('assets/js/pages/eva-icon.init.js') }}"></script>
+    <script src="{{ URL::asset('admin/assets/js/pages/eva-icon.init.js') }}"></script>
 @endsection

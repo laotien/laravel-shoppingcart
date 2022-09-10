@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('admin.app', ['pageTitle' => 'Create new post'])
 @section('css')
     <link href="{{ asset('admin/assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
 @endsection

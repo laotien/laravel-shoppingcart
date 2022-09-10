@@ -1,20 +1,7 @@
-@extends('admin.app')
-{{--@section('title')--}}
-{{--    @lang('Dashboards')--}}
-{{--@endsection--}}
+@extends('admin.app', ['pageTitle' => 'Posts'])
 @section('css')
-
 @endsection
 @section('content')
-{{--    @component('admin.components.breadcrumb')--}}
-{{--        @slot('li_1')--}}
-{{--            Category--}}
-{{--        @endslot--}}
-{{--        @slot('title')--}}
-{{--            Category--}}
-{{--        @endslot--}}
-{{--    @endcomponent--}}
-
 @endsection
 @section('script')
 
