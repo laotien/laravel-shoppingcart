@@ -33,7 +33,7 @@ class CategoryRequest extends FormRequest
 
         return [
             'name'   => $condName,
-            'status' => 'bail|in:published,draft',
+            'status' => 'bail|in:publish,draft',
         ];
     }
 }

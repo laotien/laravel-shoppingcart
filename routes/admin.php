@@ -18,35 +18,21 @@ use Illuminate\Support\Facades\Route;
     Route::group(['namespace' => 'Admin', 'prefix' => $prefix, 'as' => 'admin.'], function () {
 
         Route::get('/', 'DashboardController@index')->name('dashboard.index');
-        
-        // ============================== CATEGORY ============================== //
-        $prefix         = 'category';
-        $controllerName = 'category';
 
-        Route::group(['prefix' => $prefix], function () use ($controllerName) {
-            $controller = ucfirst($controllerName) . 'Controller@';
+       Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
+           Route::get('/', 'CategoryController@index')->name('index');
+           Route::get('form/{id?}', 'CategoryController@form')->name('form')->where('id', '[0-9]+');
+           Route::post('save', 'CategoryController@save')->name('save');
+           Route::get('destroy/{id?}', 'CategoryController@destroy')->name('destroy');
+           Route::post('items/destroy/{id?}', 'CategoryController@itemsDestroy')->name('items-destroy');
+       });
 
-            Route::get('/', ['as' => $controllerName . '.index', 'uses' => $controller . 'index']);
-            Route::get('form/{id?}', ['as' => $controllerName . '.form', 'uses' => $controller . 'form'])->where('id', '[0-9]+');
-            Route::post('save', ['as' => $controllerName . '.save', 'uses' => $controller . 'save']);
-            Route::get('delete/{id}', ['as' => $controllerName . '.delete', 'uses' => $controller . 'delete'])->where('id', '[0-9]+');
-
+        Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+            Route::get('/', 'PostsController@index')->name('index');
+            Route::get('form/{id?}', 'PostsController@form')->name('form')->where('id', '[0-9]+');
+            Route::post('save', 'PostsController@save')->name('save');
+            Route::get('destroy/{id?}', 'PostsController@destroy')->name('destroy');
+            Route::post('items/destroy/{id?}', 'PostsController@itemsDestroy')->name('items-destroy');
         });
-
-        // ============================== POSTS ============================== //
-
-        $prefix         = 'posts';
-        $controllerName = 'posts';
-
-        Route::group(['prefix' => $prefix], function () use ($controllerName) {
-            $controller = ucfirst($controllerName) . 'Controller@';
-
-            Route::get('/', ['as' => $controllerName . '.index', 'uses' => $controller . 'index']);
-            Route::get('form/{id?}', ['as' => $controllerName . '.form', 'uses' => $controller . 'form'])->where('id', '[0-9]+');
-            Route::post('save', ['as' => $controllerName . '.save', 'uses' => $controller . 'save']);
-            Route::get('delete/{id}', ['as' => $controllerName . '.delete', 'uses' => $controller . 'delete'])->where('id', '[0-9]+');
-
-        });
-
 
     });

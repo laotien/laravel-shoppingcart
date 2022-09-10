@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest as MainRequest;
-use App\Models\Category as MainModel;
+use App\Models\BlogCategory as MainModel;
 
 class CategoryController extends BaseController
 {
@@ -19,59 +20,69 @@ class CategoryController extends BaseController
 
         $this->pathViewController = 'admin.pages.category.';
         $this->controllerName     = 'category';
+        view()->share('controllerName', $this->controllerName);
     }
 
     public function index(Request $request)
     {
-        $items = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
-        return view($this->pathViewController . 'index', compact('items'));
+        $this->params['filter']['status'] = $request->input('filter_status', 'all');
+
+        $items            = $this->model->listItems($this->params, ['task' => 'admin-list-items']);
+        $itemsStatusCount = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
+
+        return view($this->pathViewController . 'index', [
+            'params'           => $this->params,
+            'items'            => $items,
+            'itemsStatusCount' => $itemsStatusCount
+        ]);
     }
 
     public function form(Request $request)
     {
-        $item     = null;
+        $item = null;
 
         if ($request->id !== null) {
             $this->params["id"] = $request->id;
-
-            $item     = $this->model->getItems($this->params, ['task' => 'get-item']);
+            $item = $this->model->getItems($this->params, ['task' => 'get-item']);
         }
-        $categoryNodes = $this->model->getItems($this->params, ['task' => 'get-category']);
+        $categorySelect = $this->model->getItems($this->params, ['task' => 'get-category']);
 
-        $data = [
-            'item'          => $item,
-            'categoryNodes' => $categoryNodes,
-            'breadcrumbs'   => [
-                [
-                    'name' => __('Categories'),
-                    'url'  => route('admin.category.index')
-                ],
-                [
-                    'name'  => __('Created'),
-                    'class' => 'active'
-                ],
-            ],
-
-        ];
-
-        return view($this->pathViewController . 'form', compact('data'));
+        return view($this->pathViewController . 'form', compact('item', 'categorySelect'));
     }
+
 
     public function save(MainRequest $request)
     {
-//        if ($request->isMethod('post')) {
-//            $params = $request->all();
-//
-//            $task   = "add-item";
-//            $notify = __('Create successful categories');
-//
-//            if($params['id'] !== null) {
-//                $task   = "edit-item";
-//                $notify = __('Update successful categories');
-//            }
-//
-//            $this->model->saveItem($params, ['task' => $task]);
-//            return redirect()->route($this->controllerName . 'index')->with("notify", $notify);
+        if ($request->isMethod('post')) {
+            $params = $request->all();
+
+            $task   = "add-item";
+            $notify = __('Successful categories creation');
+
+            if($params['id'] !== null) {
+                $task   = "edit-item";
+                $notify = __('Updating categories successfully');
+            }
+
+            $this->model->saveItem($params, ['task' => $task]);
+            return redirect()->route('admin.category.index')->with("notify", $notify);
         }
     }
+
+    public function destroy(Request $request)
+    {
+        $params["id"] = $request->id;
+        $this->model->deleteItem($params, ['task' => 'delete-item']);
+
+        return response("Deleted categories successfully.", 200);
+    }
+
+    public function itemsDestroy(Request $request)
+    {
+        $params["id"] = $request->ids;
+        $this->model->deleteItem($params, ['task' => 'delete-all-item']);
+
+        return response("Selected categories(s) deleted successfully.", 200);
+    }
+
 }

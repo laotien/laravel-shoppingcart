@@ -11,4 +11,9 @@ class PostsController extends Controller
     {
         return view('admin.pages.blog.index');
     }
+
+    public function form()
+    {
+        return view('admin.pages.blog.form');
+    }
 }
