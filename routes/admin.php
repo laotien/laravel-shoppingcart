@@ -14,31 +14,28 @@
     */
     $prefix = config('temp.url.prefix_admin');
 
-    Route::group(['namespace' => 'Admin', 'prefix' => $prefix, 'middleware' => 'auth', 'as' => 'admin.'], function () {
+    Route::group(['namespace' => 'Admin', 'prefix' => $prefix, 'middleware' => 'auth'], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard.index');
 
-        Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
-            Route::get('/', 'UserController@index')->name('index');
-            Route::get('form/{id?}', 'CategoryController@form')->name('form')->where('id', '[0-9]+');
-            Route::post('save', 'CategoryController@save')->name('save');
-            Route::get('destroy/{id?}', 'CategoryController@destroy')->name('destroy');
-            Route::post('items/destroy/{id?}', 'CategoryController@itemsDestroy')->name('items-destroy');
+        Route::group(['prefix' => 'blog'], function () {
+
+            Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+                Route::get('/', 'PostsController@index')->name('posts');
+                Route::get('form/{id?}', 'PostsController@form')->name('posts.form')->where('id', '[0-9]+');
+                Route::post('save', 'PostsController@save')->name('posts.save');
+                Route::get('destroy/{id?}', 'PostsController@destroy')->name('posts.destroy');
+                Route::post('items/destroy/{id?}', 'PostsController@itemsDestroy')->name('posts.items-destroy');
+            });
+
+            Route::group(['prefix' => 'categories'], function () {
+                Route::get('/', 'CategoryController@index')->name('category');
+                Route::get('form/{id?}', 'CategoryController@form')->name('category.form')->where('id', '[0-9]+');
+                Route::post('save', 'CategoryController@save')->name('category.save');
+                Route::get('destroy/{id?}', 'CategoryController@destroy')->name('category.destroy');
+                Route::post('items/destroy/{id?}', 'CategoryController@itemsDestroy')->name('category.items-destroy');
+            });
         });
 
-        Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
-            Route::get('/', 'CategoryController@index')->name('index');
-            Route::get('form/{id?}', 'CategoryController@form')->name('form')->where('id', '[0-9]+');
-            Route::post('save', 'CategoryController@save')->name('save');
-            Route::get('destroy/{id?}', 'CategoryController@destroy')->name('destroy');
-            Route::post('items/destroy/{id?}', 'CategoryController@itemsDestroy')->name('items-destroy');
-        });
 
-        Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
-            Route::get('/', 'PostsController@index')->name('index');
-            Route::get('form/{id?}', 'PostsController@form')->name('form')->where('id', '[0-9]+');
-            Route::post('save', 'PostsController@save')->name('save');
-            Route::get('destroy/{id?}', 'PostsController@destroy')->name('destroy');
-            Route::post('items/destroy/{id?}', 'PostsController@itemsDestroy')->name('items-destroy');
-        });
 
     });

@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('admin.app', ['pageTitle' => 'Dashboard'])
 @section('content')
     @include('admin.parts.breadcrumb')
 @endsection

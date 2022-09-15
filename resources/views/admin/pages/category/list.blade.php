@@ -1,6 +1,4 @@
-@php
-    use App\Helpers\Template;
-@endphp
+@php use App\Helpers\Template @endphp
 <div class="tab-content text-muted">
     <div class="tab-pane active" id="productnav-all" role="tabpanel">
         <div id="table-wrapper" class="table-card gridjs-border-none">
@@ -15,7 +13,7 @@
                     <th>{{ __('Name') }}</th>
                     <th>{{ __('Slug') }}</th>
                     <th>{{ __('Created') }}</th>
-                    <th>{{ __('Updated') }}</th>
+                    <th>{{ __('Author') }}</th>
                     <th>{{ __('Status') }}</th>
                     <th>{{ __('Action') }}</th>
                 </tr>
@@ -26,11 +24,11 @@
                         @php
                             $name = Template::categoriesNested($item['name'], $item['depth']);
                             $slug =  $item['slug'];
+							$id = $item['id'];
+							$byCreateUser =  \App\Models\User::find($item['create_user'])->first()->name;
                             $createdHistory = Template::showItemHistory($item['created_at']);
                             $updatedHistory = Template::showItemHistory($item['updated_at']);
                             $status = Template::showItemStatus($item['status']);
-							$id = $item['id'];
-							$btnAction = Template::showButtonAction($controllerName, $id);
                         @endphp
                         <tr>
                             <th scope="row">
@@ -38,16 +36,16 @@
                                     <input class="form-check-input" type="checkbox" name="chk_child" value="{{ $id }}">
                                 </div>
                             </th>
-                            <td>{!! $name !!}</td>
+                            <td>{!! $name  !!}</td>
                             <td>{!! $slug !!}</td>
                             <td>{!! $createdHistory !!}</td>
-                            <td>{!! $updatedHistory !!}</td>
+                            <td>{!! $byCreateUser !!}</td>
                             <td>{!! $status !!}</td>
                             <td>
                                 <ul class="list-inline hstack gap-2 mb-0">
                                     <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                         data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                        <a href="{{ route('admin.category.form', ['id' => $id]) }}"
+                                        <a href="{{ route('category.form', ['id' => $id]) }}"
                                            class="text-primary d-inline-block edit-item-btn">
                                             <i class="ri-pencil-fill fs-16"></i>
                                         </a>
@@ -56,7 +54,7 @@
                                         data-bs-trigger="hover" data-bs-placement="top" title="Remove">
                                         <a class="text-danger d-inline-block remove-item-btn"
                                            data-bs-toggle="modal" href="#deleteRecordModal"
-                                           data-url="{{ route('admin.category.destroy', ['id' => $id]) }}">
+                                           data-url="{{ route('category.destroy', ['id' => $id]) }}">
                                             <i class="ri-delete-bin-5-fill fs-16"></i>
                                         </a>
                                     </li>
@@ -70,16 +68,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <!-- end tab pane -->
-
-    <div class="tab-pane" id="productnav-published" role="tabpanel">
-        <div id="table-product-list-published" class="table-card gridjs-border-none"></div>
-    </div>
-    <!-- end tab pane -->
-
-    <div class="tab-pane" id="productnav-draft" role="tabpanel">
-
     </div>
     <!-- end tab pane -->
 </div>

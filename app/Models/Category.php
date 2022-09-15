@@ -6,11 +6,11 @@
     use Kalnoy\Nestedset\NodeTrait;
     use Illuminate\Support\Facades\DB;
 
-    class BlogCategory extends BaseModel
+    class Category extends BaseModel
     {
         use HasFactory, NodeTrait;
 
-        protected $table = 'core_blog_category';
+        protected $table = 'categories';
 
         protected $fillable
             = [
@@ -31,7 +31,12 @@
         protected $slugField = 'slug';
         protected $slugFromField = 'name';
 
-        public function listItems($params = null, $options = null)
+        public function getAuthor ()
+        {
+            return $this->belongsTo(User::class, "create_user", "id");
+        }
+
+        public function listItems ($params = null, $options = null)
         {
             $result = null;
 
@@ -55,19 +60,19 @@
         public function getItems($params = null, $options = null)
         {
             $result = null;
-            // Get all category form
+            // Get all categories form
             if ($options['task'] == 'get-item') {
-                $result = self::select('id', 'name', 'slug', 'icon_class', 'description', 'parent_id', 'status')
+                $result = $this->select('id', 'name', 'slug', 'icon_class', 'description', 'parent_id', 'status')
                     ->where('id', $params['id'])->first();
             }
             // Get select categories node
             if ($options['task'] == 'get-category') {
-                $query = self::select('id', 'name')->where('_lft', '<>', NULL)
+                $query = $this->select('id', 'name')->where('_lft', '<>', NULL)
                     ->withDepth()
                     ->defaultOrder();
 
                 if (isset($params['id'])) {
-                    $node = self::findOrFail($params['id']);
+                    $node = $this->findOrFail($params['id']);
                     $query->where('_lft', '<', $node->_lft)
                         ->orWhere('_rgt', '>', $node->_rgt);
                 }
@@ -78,21 +83,20 @@
                     $result[$node['id']] = str_repeat('|--', $node['depth']) . ' ' . $node['name'];
                 }
             }
-
             return $result;
         }
 
         public function saveItem($params = null, $options = null)
         {
             if ($options['task'] == 'add-item') {
-                $parent = self::findOrFail($params['parent_id']);
+                $parent = $this->findOrFail($params['parent_id']);
 
-                self::create($this->prepareParams($params), $parent);
+                $this->create($this->prepareParams($params), $parent);
             }
 
             if ($options['task'] == 'edit-item') {
-                $parent = self::findOrFail($params['parent_id']);
-                $query  = $current = self::findOrFail($params['id']);
+                $parent = $this->findOrFail($params['parent_id']);
+                $query  = $current = $this->findOrFail($params['id']);
 
                 $query->update($this->prepareParams($params));
                 if ($current->parent_id != $params['parent_id']) $query->prependToNode($parent)->save();
@@ -103,7 +107,8 @@
         {
             $result = null;
             if ($options['task'] == 'admin-count-items-group-by-status') {
-                $query = self::groupBy('status')
+                $query = $this->where('id', '>', 1)
+                    ->groupBy('status')
                     ->select(DB::raw('status , COUNT(id) as count'))
                     ->orderBy('status', 'DESC');
                 $result = $query->get()->toArray();
@@ -114,13 +119,13 @@
         public function deleteItem($params = null, $options = null)
         {
             if ($options['task'] == 'delete-item') {
-                self::findOrFail($params['id'])->delete();
-//            $node = self::findOrFail($params['id']);
+                $this->findOrFail($params['id'])->delete();
+//            $node = $this->findOrFail($params['id']);
 //            $node->delete();
             }
 
             if ($options['task'] == 'delete-all-item') {
-                self::whereIn('id', $params['id'])->delete();
+                $this->whereIn('id', $params['id'])->delete();
             }
         }
     }

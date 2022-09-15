@@ -1,13 +1,14 @@
 @php
     $statusValue = ['publish' => config('temp.template.status.publish.name'), 'draft' => config('temp.template.status.draft.name')];
+	isset($item['name']) ? $pageTitle = "Edit: " . $item['name'] : $pageTitle = 'Create new categories';
 @endphp
-@extends('admin.app', ['pageTitle' => 'Create new category'])
+@extends('admin.app', ['pageTitle' => $pageTitle])
 @section('content')
     @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.created')])
     @include('admin.components.notify')
     {{ Form::open([
         'method' => 'POST',
-        'url'=> route("admin.category.save"),
+        'url'=> route("$controllerName.save"),
         'accept-charset' => 'UTF-8',
         'novalidate'
 	])}}
@@ -31,7 +32,7 @@
                     </div>
                     <div class="mb-3">
                         {!! Form::label('parent', __('Parent'), ['class' => 'form-label']) !!}
-                        {!! Form::select('parent_id', $categorySelect, old('parent_id', @$item['parent_id']),['class' => 'form-select', 'data-choices', 'data-choices-sorting-false', 'data-choices-search']) !!}
+                        {!! Form::select('parent_id', $item['category'], old('parent_id', @$item['parent_id']),['class' => 'form-select', 'data-choices', 'data-choices-sorting-false', 'data-choices-search']) !!}
                     </div>
                     <div class="mb-3">
                         {!! Form::label('icon', __('Icon'), ['class' => 'form-label']) !!}

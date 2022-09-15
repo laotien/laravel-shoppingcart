@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class CategoryUpdateRequest extends FormRequest
 {
-    private $table = 'core_blog_category';
+    private $table = 'categories';
     /**
      * Determine if the user is authorized to make this request.
      *

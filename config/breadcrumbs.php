@@ -6,11 +6,11 @@
                 ['name' => 'Categories', 'class' => 'active']
             ],
             'created' => [
-                ['name' => 'Categories', 'url' => 'admin.category.index'],
+                ['name' => 'Categories', 'url' => 'category'],
                 ['name' => 'Create', 'class' => 'active'],
             ],
             'edit'    => [
-                ['name' => 'Categories', 'url' => 'admin.category.edit'],
+                ['name' => 'Categories', 'url' => 'category.edit'],
                 ['name' => 'Edit', 'class' => 'active'],
             ]
         ],

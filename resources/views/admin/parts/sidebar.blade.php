@@ -1,7 +1,7 @@
 @php
     $menus = [
 		'dashboard'=>[
-            'url'   => route('admin.dashboard.index'),
+            'url'   => route('dashboard.index'),
             'title' => __("Dashboard"),
             'icon'  => 'bx bxs-dashboard',
         ],
@@ -11,13 +11,13 @@
             'icon'  => 'bx bx-pencil',
             'children' => [
 				'posts'=>[
-                    'url'        => route('admin.posts.index'),
+                    'url'        => '',
                     'title'      => __('Posts'),
                     'icon'       => '',
                 ],
                 'category'=>[
-                    'url'        => route('admin.category.index'),
-                    'title'      => __('Category'),
+                    'url'        => route('category'),
+                    'title'      => __('Categories'),
                     'icon'       => '',
                 ],
             ],
@@ -59,7 +59,7 @@
                 <li class="menu-title"><span>{{ __('General') }}</span></li>
                 @foreach($menus as $menu)
                     <li class="nav-item">
-                        <a class="nav-link menu-link @if(!empty($menu['children'])) collapsed @endif" href="#{{ $menu['url'] }}" @if (!empty($menu['children'])) data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="{{ $menu['url'] }}" @endif>
+                        <a class="nav-link menu-link @if(!empty($menu['children'])) collapsed @endif" href="{{ $menu['url'] }}" @if (!empty($menu['children'])) data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="{{ $menu['url'] }}" @endif>
                             @if(!empty($menu['icon']))
                                 <i class="{{ $menu['icon'] }}"></i>
                             @endif

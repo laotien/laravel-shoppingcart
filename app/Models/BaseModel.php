@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class BaseModel extends Model
@@ -23,15 +24,16 @@ class BaseModel extends Model
     public function save(array $options = [])
     {
         if ($this->create_user) {
-            $this->update_user = 1;
+            $this->update_user = Auth::id();
         } else {
-            $this->create_user = 1;
+            $this->create_user = Auth::id();
         }
         if ($this->slugField && $this->slugFromField) {
             $slugField = $this->slugField;
             $this->$slugField = $this->generateSlug($this->$slugField);
         }
         $this->cleanFields();
+
         return parent::save($options);
     }
 

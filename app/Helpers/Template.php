@@ -4,19 +4,16 @@
 
     use Illuminate\Support\Facades\Config;
 
-    /**
-     *
-     */
     class Template
     {
 
         /**
          * @param $controllerName
          * @param $itemsStatusCount
-         * @return string
+         * @return ?string
          */
         public static function showButtonFilter($controllerName, $itemsStatusCount, $currentFilterStatus)
-        : string
+        : ?string
         {
             $xhtml      = null;
             $tmplStatus = Config::get('temp.template.status');
@@ -32,7 +29,7 @@
                     $statusValue = array_key_exists($statusValue, $tmplStatus) ? $statusValue : 'default'; // check
 
                     $currentTemplateStatus = $tmplStatus[$statusValue]; // $value['status'] inactive block active
-                    $link                  = route('admin.' . $controllerName . '.index') . "?filter_status=" . $statusValue;
+                    $link                  = route($controllerName) . "?filter_status=" . $statusValue;
                     $class                 = ($currentFilterStatus == $statusValue) ? 'active' : '';
 
                     $xhtml .= sprintf('
@@ -102,7 +99,7 @@
             foreach ($listButtons as $btn) {
                 $currentButton = $tmplButton[$btn];
 
-                $link = route('admin.' . $controllerName . $currentButton['route-name'], ['id' => $id]);
+                $link = route($controllerName . $currentButton['route-name'], ['id' => $id]);
 
                 $xhtml .= sprintf(
                     '<li class="list-inline-item edit" data-bs-toggle="tooltip"

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest as MainRequest;
-use App\Models\BlogCategory as MainModel;
+use App\Http\Requests\CategoryUpdateRequest as MainRequest;
+use App\Models\Category as MainModel;
 
 class CategoryController extends BaseController
 {
@@ -17,9 +16,9 @@ class CategoryController extends BaseController
     public function __construct()
     {
         $this->model              = new MainModel();
-
         $this->pathViewController = 'admin.pages.category.';
         $this->controllerName     = 'category';
+
         view()->share('controllerName', $this->controllerName);
     }
 
@@ -45,9 +44,9 @@ class CategoryController extends BaseController
             $this->params["id"] = $request->id;
             $item = $this->model->getItems($this->params, ['task' => 'get-item']);
         }
-        $categorySelect = $this->model->getItems($this->params, ['task' => 'get-category']);
+        $item['category'] = $this->model->getItems($this->params, ['task' => 'get-category']);
 
-        return view($this->pathViewController . 'form', compact('item', 'categorySelect'));
+        return view($this->pathViewController . 'form', compact('item'));
     }
 
 
@@ -57,15 +56,15 @@ class CategoryController extends BaseController
             $params = $request->all();
 
             $task   = "add-item";
-            $notify = __('Successful categories creation');
+            $notify = __('Created successfully');
 
             if($params['id'] !== null) {
                 $task   = "edit-item";
-                $notify = __('Updating categories successfully');
+                $notify = __('Updated successfully');
             }
 
             $this->model->saveItem($params, ['task' => $task]);
-            return redirect()->route('admin.category.index')->with("notify", $notify);
+            return redirect()->route($this->controllerName)->with("notify", $notify);
         }
     }
 
@@ -74,7 +73,7 @@ class CategoryController extends BaseController
         $params["id"] = $request->id;
         $this->model->deleteItem($params, ['task' => 'delete-item']);
 
-        return response("Deleted categories successfully.", 200);
+        return response("Deleted successfully.", 200);
     }
 
     public function itemsDestroy(Request $request)

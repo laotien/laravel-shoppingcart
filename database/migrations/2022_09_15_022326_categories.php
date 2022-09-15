@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CoreBlogCategory extends Migration
+class Categories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CoreBlogCategory extends Migration
      */
     public function up()
     {
-        Schema::create('core_blog_category', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name',255)->nullable();
             $table->string('icon_class',255)->nullable();
@@ -41,3 +41,4 @@ class CoreBlogCategory extends Migration
         //
     }
 }
+

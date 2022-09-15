@@ -1,11 +1,11 @@
-@extends('admin.app', ['pageTitle' => 'Category'])
+@extends('admin.app', ['pageTitle' => 'Categories'])
 @section('content')
     @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.index')])
 
     <div class="row">
         <div class="col-lg-12">
             @include('admin.components.notify')
-            <div class="card" id="categoryList">
+            <div class="card">
                 @include('admin.components.card-header')
                 @include('admin.components.tab')
                 <div class="card-body">
