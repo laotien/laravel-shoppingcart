@@ -55,6 +55,7 @@
             return str_repeat('|-- ', $depth - 1) . $name;
         }
 
+
         /**
          * @param $time
          * @return string
@@ -63,6 +64,29 @@
         : string
         {
             return date(Config::get('temp.format.short_time'), strtotime($time));
+        }
+
+        /**
+         * @param $categories
+         * @param $xhtml
+         * @return void
+         */
+        public static function categories($categories, &$xhtml) :void
+        {
+            foreach ($categories as $category) {
+                if (count($category['children']) > 0) {
+                    $xhtml .= sprintf('<li value="%s">
+                        <input class="form-check-input" type="checkbox"  value="%s" name="categories[]">
+                        <label class="mb-2">%s</label><ul class="form-check list-unstyled">', $category['id'], $category['id'], $category['name']);
+                        self::categories($category['children'], $xhtml);
+                    $xhtml .= '</ul></li>';
+                } else {
+                    $xhtml .= sprintf('<li value="%s">
+                        <input class="form-check-input" type="checkbox"  value="%s" name="categories[]">
+                        <label class="mb-2">%s</label>', $category['id'], $category['id'], $category['name']);
+                    $xhtml .= '</li>';
+                }
+            }
         }
 
         /**

@@ -26,8 +26,8 @@ class PostUpdateRequest extends FormRequest
     {
         $id       = $this->id;
         $condName = "bail|required|between:5,100|unique:$this->table,name";
-
-        if (!empty($id)) { // edit
+        // edit
+        if (!empty($id)) {
             $condName .= ",$id";
         }
 

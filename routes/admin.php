@@ -19,7 +19,7 @@
 
         Route::group(['prefix' => 'blog'], function () {
 
-            Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+            Route::group(['prefix' => 'posts'], function () {
                 Route::get('/', 'PostsController@index')->name('posts');
                 Route::get('form/{id?}', 'PostsController@form')->name('posts.form')->where('id', '[0-9]+');
                 Route::post('save', 'PostsController@save')->name('posts.save');

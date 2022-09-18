@@ -4,7 +4,8 @@
 
     use Illuminate\Http\Request;
     use App\Http\Requests\PostUpdateRequest as MainRequest;
-    use App\Models\Category as MainModel;
+    use App\Models\Category;
+    use App\Models\Posts as MainModel;
 
     class PostsController extends BaseController
     {
@@ -44,9 +45,11 @@
                 $this->params["id"] = $request->id;
                 $item = $this->model->getItems($this->params, ['task' => 'get-item']);
             }
-            $item['category'] = $this->model->getItems($this->params, ['task' => 'get-category']);
 
-            return view($this->pathViewController . 'form', compact('item'));
+            $categoryModel = new Category();
+            $categories = $categoryModel->getItems($this->params, ['task' => 'ad-list-category-posts-form']);
+
+            return view($this->pathViewController . 'form', compact('item', 'categories'));
         }
 
 
@@ -54,7 +57,7 @@
         {
             if ($request->isMethod('post')) {
                 $params = $request->all();
-
+                dd($params);
                 $task   = "add-item";
                 $notify = __('Created successfully');
 
