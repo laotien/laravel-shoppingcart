@@ -11,6 +11,8 @@
         use HasFactory, NodeTrait;
 
         protected $table = 'categories';
+        protected $slugField = 'slug';
+        protected $slugFromField = 'name';
 
         protected $fillable
             = [
@@ -28,20 +30,17 @@
                 'name'
             ];
 
-        protected $slugField = 'slug';
-        protected $slugFromField = 'name';
-
-        public function getAuthor ()
+        public function user()
         {
-            return $this->belongsTo(User::class, "create_user", "id");
+            return $this->belongsTo(User::class, 'create_user', 'id');
         }
 
-        public function listItems ($params = null, $options = null)
+        public function listItems($params = null, $options = null)
         {
             $result = null;
 
             if ($options['task'] == 'admin-list-items') {
-                $query = $this->orderBy('id', 'desc');
+                $query = $this->with('user')->orderBy('id', 'desc');
 
                 if ($params['filter']['status'] !== "all") {
                     $query->where('status', '=', $params['filter']['status']);
@@ -51,8 +50,7 @@
                     ->having('depth', '>', 0)
                     ->defaultOrder()
                     ->get()
-                    ->toFlatTree()
-                    ->toArray();
+                    ->toFlatTree();
             }
             return $result;
         }
@@ -65,8 +63,8 @@
                 $result = $this->select('id', 'name', 'slug', 'icon_class', 'description', 'parent_id', 'status')
                     ->where('id', $params['id'])->first();
             }
-            // Get select categories node
-            if ($options['task'] == 'get-category') {
+            // Get list categories form
+            if ($options['task'] == 'get-list-category-form') {
                 $query = $this->select('id', 'name')->where('_lft', '<>', NULL)
                     ->withDepth()
                     ->defaultOrder();
@@ -83,6 +81,17 @@
                     $result[$node['id']] = str_repeat('|--', $node['depth']) . ' ' . $node['name'];
                 }
             }
+
+            // Get list categories form
+            if ($options['task'] == 'ad-list-category-posts-form') {
+                $result = $this->withDepth()
+                    ->having('depth', '>', 0)
+                    ->defaultOrder()
+                    ->get()
+                    ->toTree()
+                    ->toArray();
+            }
+
             return $result;
         }
 
@@ -107,7 +116,7 @@
         {
             $result = null;
             if ($options['task'] == 'admin-count-items-group-by-status') {
-                $query = $this->where('id', '>', 1)
+                $query  = $this->where('id', '>', 1)
                     ->groupBy('status')
                     ->select(DB::raw('status , COUNT(id) as count'))
                     ->orderBy('status', 'DESC');

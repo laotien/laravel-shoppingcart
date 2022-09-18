@@ -44,7 +44,7 @@ class CategoryController extends BaseController
             $this->params["id"] = $request->id;
             $item = $this->model->getItems($this->params, ['task' => 'get-item']);
         }
-        $item['category'] = $this->model->getItems($this->params, ['task' => 'get-category']);
+        $item['category'] = $this->model->getItems($this->params, ['task' => 'get-list-category-form']);
 
         return view($this->pathViewController . 'form', compact('item'));
     }

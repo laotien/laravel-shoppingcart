@@ -25,7 +25,7 @@
                             $name = Template::categoriesNested($item['name'], $item['depth']);
                             $slug =  $item['slug'];
 							$id = $item['id'];
-							$byCreateUser =  \App\Models\User::find($item['create_user'])->first()->name;
+							$author = $item->user->name;
                             $createdHistory = Template::showItemHistory($item['created_at']);
                             $updatedHistory = Template::showItemHistory($item['updated_at']);
                             $status = Template::showItemStatus($item['status']);
@@ -36,10 +36,10 @@
                                     <input class="form-check-input" type="checkbox" name="chk_child" value="{{ $id }}">
                                 </div>
                             </th>
-                            <td>{!! $name  !!}</td>
+                            <td>{!! $name  !!} </td>
                             <td>{!! $slug !!}</td>
                             <td>{!! $createdHistory !!}</td>
-                            <td>{!! $byCreateUser !!}</td>
+                            <td>{!! $author !!}</td>
                             <td>{!! $status !!}</td>
                             <td>
                                 <ul class="list-inline hstack gap-2 mb-0">

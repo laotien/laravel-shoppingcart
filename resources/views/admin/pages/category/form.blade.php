@@ -1,16 +1,22 @@
 @php
     $statusValue = ['publish' => config('temp.template.status.publish.name'), 'draft' => config('temp.template.status.draft.name')];
-	isset($item['name']) ? $pageTitle = "Edit: " . $item['name'] : $pageTitle = 'Create new categories';
+	if (isset($item['id'])) {
+		$pageTitle = "Edit: " . $item['name'];
+		$breadcrumbs = config('breadcrumbs.category.edit');
+	} else {
+		$pageTitle = 'Create new categories';
+		$breadcrumbs = config('breadcrumbs.category.created');
+	}
+
 @endphp
 @extends('admin.app', ['pageTitle' => $pageTitle])
 @section('content')
-    @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.created')])
+    @include('admin.parts.breadcrumb', ['breadcrumbs' => $breadcrumbs])
     @include('admin.components.notify')
     {{ Form::open([
         'method' => 'POST',
         'url'=> route("$controllerName.save"),
         'accept-charset' => 'UTF-8',
-        'novalidate'
 	])}}
 
     <div class="row">
@@ -39,7 +45,7 @@
                         {!! Form::text('icon', old('icon', @$item['icon']), ['class' => 'form-control', 'placeholder' => 'Enter category icon']) !!}
                     </div>
                     <div>
-                        {!! Form::label('icon', __('Category Description'), ['class' => 'form-label']) !!}
+                        {!! Form::label('icon', __('Description'), ['class' => 'form-label']) !!}
                         {!! Form::textarea('description', old('description', @$item['description']), ['class' => 'form-control', 'rows' => 3, 'maxlength' => 100, 'placeholder' => __('Must enter minimum of a 100 characters')]) !!}
                     </div>
                 </div>

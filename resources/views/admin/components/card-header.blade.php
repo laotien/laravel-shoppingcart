@@ -10,7 +10,7 @@
                 <button class="btn btn-soft-danger" onClick="deleteMultiple()" data-delete-url="{{ route("$controllerName.items-destroy") }}">
                     <i class="ri-delete-bin-2-line"></i></button>
                 <a class="btn btn-success add-btn" id="create-btn" href="{{ route("$controllerName.form") }}">
-                    <i class="ri-add-line align-bottom me-1"></i> {{ __('Add Category') }}</a>
+                    <i class="ri-add-line align-bottom me-1"></i> {{ __('Create') }}</a>
             </div>
         </div>
     </div>
