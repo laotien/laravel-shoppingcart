@@ -29,7 +29,8 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
-                return redirect()->route('dashboard.index');
+                if (session()->exists('link'))
+                    return (str_contains(session('link'), config('temp.url.prefix_admin')) ? redirect(session('link')) : redirect()->route('dashboard.index'));
             }
         });
         // Logout redirect
@@ -75,7 +76,9 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        Fortify::loginView(function () {
+        Fortify::loginView(function (Request $request ) {
+            // get url previous
+            if ((strpos(url()->previous(), $request->url()) === false)) session(['link' => url()->previous()]);
             return view('admin.auth.login');
         });
 
