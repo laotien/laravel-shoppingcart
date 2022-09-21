@@ -16,6 +16,11 @@ class BaseModel extends Model
     protected $cleanFields = [];
     public $translationForeignKey = 'origin_id';
 
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'create_user', 'id')->select('id', 'first_name', 'last_name');
+    }
+
     public function prepareParams($params): array
     {
         return array_diff_key($params, array_flip($this->crudNotAccepted));

@@ -1,20 +1,12 @@
 @php
-    // List categories
-    $xhtmlCategory = '';
-    if (count($categories) > 0) {
-        $xhtmlCategory .= '<ul class="form-check list-unstyled">';
-        \App\Helpers\Template::categories($categories, $xhtmlCategory);
-    }
-    $xhtmlCategory .= '</ul>';
 
-    $statusValue = ['publish' => config('temp.template.status.publish.name'), 'draft' => config('temp.template.status.draft.name')];
-
+    $statusValue = ['publish' => config('temp.template.status.published.name'), 'draft' => config('temp.template.status.draft.name')];
     if (isset($item['id'])) {
 		$pageTitle = "Edit: " . $item['name'];
-		$breadcrumbs = config('breadcrumbs.category.edit');
+		$breadcrumbs = config('breadcrumbs.posts.edit');
 	} else {
-		$pageTitle = 'Create new categories';
-		$breadcrumbs = config('breadcrumbs.category.created');
+		$pageTitle = 'Create new post';
+		$breadcrumbs = config('breadcrumbs.posts.created');
 	}
 @endphp
 @extends('admin.app', ['pageTitle' => $pageTitle])
@@ -22,7 +14,7 @@
     <link href="{{ asset('admin/assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-    @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.posts.created')])
+    @include('admin.parts.breadcrumb', ['pageIndex' => true, 'breadcrumbs' => $breadcrumbs])
     @include('admin.components.notify')
     {{ Form::open([
         'method' => 'POST',
@@ -44,7 +36,7 @@
 
                     <div class="mb-3">
                         {!! Form::label('ckeditor', 'Content', ['class' => 'form-label']) !!}
-                        <div id="ckeditor-classic"></div>
+                        <div id="ckeditor-classic">{{ @$item['content'] }}</div>
                     </div>
                 </div>
             </div>
@@ -74,22 +66,41 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Categories</h5>
+                    <h5 class="card-title mb-0">{{__('Categories')}}</h5>
                 </div>
-                <div class="card-body">{!! $xhtmlCategory !!}</div>
+                <div class="card-body">
+                    @php
+                        $xhtmlCategory = '';
+                       if (count($categories) > 0) {
+                            $ids = $item->categories->pluck('id')->toArray();
+                            $xhtmlCategory .= '<ul class="form-check list-unstyled">';
+                            \App\Helpers\Template::categories($categories, $ids, $xhtmlCategory);
+                       }
+                       $xhtmlCategory .= '</ul>';
+                    @endphp
+
+                    {!! $xhtmlCategory !!}
+
+                </div>
+                <!-- end card body -->
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{__('Feature Image')}}</h5>
+                </div>
+                <div class="card-body"></div>
                 <!-- end card body -->
             </div>
             <!-- end card -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tags</h5>
+                    <h5 class="card-title mb-0">{{__('Tags')}}</h5>
                 </div>
                 <div class="card-body">
                     <div class="hstack gap-3 align-items-start">
                         <div class="flex-grow-1">
-                            <input class="form-control" data-choices data-choices-multiple-remove="true"
-                                   placeholder="Enter tags" type="text"
-                                   value="Cotton"/>
+                            {!! Form::text('tags', @$item['tags'], ['class' => 'form-control', 'data-choices-multiple-remove' => true, 'data-choices', 'placeholder'=> 'Enter tags']) !!}
                         </div>
                     </div>
                 </div>
@@ -99,7 +110,7 @@
         </div>
     </div>
     <!-- end row -->
-    </form>
+    {{ Form::close() }}
 @endsection
 @section('script')
     <script src="{{ asset('admin/assets/libs/@ckeditor/@ckeditor.min.js') }}"></script>

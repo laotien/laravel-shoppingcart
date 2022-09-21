@@ -771,7 +771,7 @@
                             <img class="rounded-circle header-profile-user" src="@if(Auth::user()->avatar != '') {{ asset('admin/images/'. Auth::user()->avatar) }} @else {{ asset('admin/assets/images/users/avatar-1.jpg') }} @endif"
                                 alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{Auth::user()->name}}</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</span>
                                 <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ __('Administrator') }}</span>
                             </span>
                         </span>

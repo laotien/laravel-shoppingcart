@@ -23,7 +23,7 @@
                 'all'      => ['name' => 'All', 'class' => 'btn-success'],
                 'active'   => ['name' => 'Active', 'class' => 'btn-success'],
                 'inactive' => ['name' => 'Inactive', 'class' => 'btn-info'],
-                'publish'  => ['name' => 'Published', 'class' => 'badge badge-soft-success text-uppercase'],
+                'published'  => ['name' => 'Published', 'class' => 'badge badge-soft-success text-uppercase'],
                 'draft'    => ['name' => 'Draft', 'class' => 'badge badge-soft-warning text-uppercase'],
                 'block'    => ['name' => 'Block', 'class' => 'btn-danger'],
                 'default'  => ['name' => 'Default', 'class' => 'btn-success'],

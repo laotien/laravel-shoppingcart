@@ -1,6 +1,6 @@
 @extends('admin.app', ['pageTitle' => 'Categories'])
 @section('content')
-    @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.category.index')])
+    @include('admin.parts.breadcrumb', ['pageIndex' => false, 'breadcrumbs' => config('breadcrumbs.category.index')])
 
     <div class="row">
         <div class="col-lg-12">

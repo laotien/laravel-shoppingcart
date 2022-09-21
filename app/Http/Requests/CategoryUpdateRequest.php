@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CategoryUpdateRequest extends FormRequest
 {
-    private $table = 'categories';
+    private $table = 'news_category';
     /**
      * Determine if the user is authorized to make this request.
      *

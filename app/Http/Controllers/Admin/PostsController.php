@@ -4,8 +4,8 @@
 
     use Illuminate\Http\Request;
     use App\Http\Requests\PostUpdateRequest as MainRequest;
-    use App\Models\Category;
-    use App\Models\Posts as MainModel;
+    use App\Models\NewsCategory;
+    use App\Models\NewsPosts as MainModel;
 
     class PostsController extends BaseController
     {
@@ -27,9 +27,9 @@
         {
             $this->params['filter']['status'] = $request->input('filter_status', 'all');
 
-            $items            = $this->model->listItems($this->params, ['task' => 'admin-list-items']);
-            $itemsStatusCount = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-
+            $items            = $this->model->listItems($this->params, ['task' => 'ad-list-items']);
+            $itemsStatusCount = $this->model->countItems($this->params, ['task' => 'ad-count-items-group-by-status']); // [ ['status', 'count']]
+            //dd($items);
             return view($this->pathViewController . 'index', [
                 'params'           => $this->params,
                 'items'            => $items,
@@ -37,17 +37,17 @@
             ]);
         }
 
-        public function form(Request $request)
+        public function form(Request $request, NewsCategory $category)
         {
             $item = null;
 
             if ($request->id !== null) {
                 $this->params["id"] = $request->id;
-                $item = $this->model->getItems($this->params, ['task' => 'get-item']);
+                $item = $this->model->getItems($this->params, ['task' => 'ad-get-item']);
+ //               dd($item);
             }
 
-            $categoryModel = new Category();
-            $categories = $categoryModel->getItems($this->params, ['task' => 'ad-list-category-posts-form']);
+            $categories = $category->getItems($this->params, ['task' => 'ad-list-category-posts-form']);
 
             return view($this->pathViewController . 'form', compact('item', 'categories'));
         }
@@ -57,12 +57,12 @@
         {
             if ($request->isMethod('post')) {
                 $params = $request->all();
-                dd($params);
-                $task   = "add-item";
+               // dd($params);
+                $task   = "ad-add-item";
                 $notify = __('Created successfully');
 
                 if($params['id'] !== null) {
-                    $task   = "edit-item";
+                    $task   = "ad-edit-item";
                     $notify = __('Updated successfully');
                 }
 

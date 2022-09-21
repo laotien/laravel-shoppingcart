@@ -1,6 +1,6 @@
 @extends('admin.app', ['pageTitle' => 'Post'])
 @section('content')
-    @include('admin.parts.breadcrumb', ['breadcrumbs' => config('breadcrumbs.posts.index')])
+    @include('admin.parts.breadcrumb', ['pageIndex' => false, 'breadcrumbs' => config('breadcrumbs.posts.index')])
 
     <div class="row">
         <div class="col-lg-12">
@@ -9,8 +9,8 @@
                 @include('admin.components.card-header')
                 @include('admin.components.tab')
                 <div class="card-body">
-{{--                    @include('admin.pages.post.list')--}}
-{{--                    @include('admin.components.modal')--}}
+                    @include('admin.pages.post.list')
+                    @include('admin.components.modal')
                 </div>
                 <!-- end card body -->
             </div>

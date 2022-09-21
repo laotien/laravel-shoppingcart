@@ -68,22 +68,28 @@
 
         /**
          * @param $categories
+         * @param $id
          * @param $xhtml
          * @return void
          */
-        public static function categories($categories, &$xhtml) :void
+        public static function categories($categories, &$ids, &$xhtml) :void
         {
+            $checked = '';
             foreach ($categories as $category) {
+                foreach($ids as $id) {
+                    ($category['id'] == $id ? $checked = 'checked' : $checked = '');
+                }
+
                 if (count($category['children']) > 0) {
                     $xhtml .= sprintf('<li value="%s">
-                        <input class="form-check-input" type="checkbox"  value="%s" name="categories[]">
-                        <label class="mb-2">%s</label><ul class="form-check list-unstyled">', $category['id'], $category['id'], $category['name']);
-                        self::categories($category['children'], $xhtml);
+                        <input class="form-check-input" %s type="checkbox"  value="%s" name="categories[]">
+                        <label class="mb-2">%s</label><ul class="form-check list-unstyled">', $category['id'], $checked, $category['id'], $category['name']);
+                        self::categories($category['children'], $id,$xhtml);
                     $xhtml .= '</ul></li>';
                 } else {
                     $xhtml .= sprintf('<li value="%s">
-                        <input class="form-check-input" type="checkbox"  value="%s" name="categories[]">
-                        <label class="mb-2">%s</label>', $category['id'], $category['id'], $category['name']);
+                        <input class="form-check-input" %s type="checkbox"  value="%s" name="categories[]">
+                        <label class="mb-2">%s</label>', $category['id'], $checked, $category['id'], $category['name']);
                     $xhtml .= '</li>';
                 }
             }

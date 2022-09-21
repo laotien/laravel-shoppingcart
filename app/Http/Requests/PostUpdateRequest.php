@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PostUpdateRequest extends FormRequest
 {
-    private $table = 'posts';
+    private $table = 'news_posts';
     /**
      * Determine if the user is authorized to make this request.
      *

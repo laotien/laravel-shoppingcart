@@ -6,18 +6,28 @@
             'icon'  => 'bx bxs-dashboard',
         ],
         'posts'=>[
-            'url'   => 'sidebarPosts',
-            'title' => __("Posts"),
-            'icon'  => 'bx bx-pencil',
+            'url'   => 'sidebarNews',
+            'title' => __("News"),
+            'icon'  => 'bx bxs-news',
             'children' => [
 				'posts'=>[
-                    'url'        => '',
-                    'title'      => __('Posts'),
+                    'url'        => route('posts'),
+                    'title'      => __('All News'),
+                    'icon'       => '',
+                ],
+                'add_news'=>[
+                    'url'        => route('posts.form'),
+                    'title'      => __('Add News'),
                     'icon'       => '',
                 ],
                 'category'=>[
                     'url'        => route('category'),
                     'title'      => __('Categories'),
+                    'icon'       => '',
+                ],
+                'tags'=>[
+                    'url'        => '',
+                    'title'      => __('Tags'),
                     'icon'       => '',
                 ],
             ],

@@ -6,41 +6,30 @@
     use Kalnoy\Nestedset\NodeTrait;
     use Illuminate\Support\Facades\DB;
 
-    class Category extends BaseModel
+    class NewsCategory extends BaseModel
     {
         use HasFactory, NodeTrait;
 
-        protected $table = 'categories';
+        protected $table = 'news_category';
         protected $slugField = 'slug';
         protected $slugFromField = 'name';
 
-        protected $fillable
-            = [
-                'name',
-                'description',
-                'status',
-                'parent_id',
-                'create_user',
-                'update_user'
-            ];
+        protected $fillable = ['name', 'description', 'status', 'parent_id', 'create_user', 'update_user'];
 
-        protected $fieldSearchAccepted
-            = [
-                'id',
-                'name'
-            ];
+        protected $fieldSearchAccepted = ['id', 'name'];
 
-        public function user()
+
+        public function posts()
         {
-            return $this->belongsTo(User::class, 'create_user', 'id');
+            return $this->belongsToMany(NewsPosts::class, 'news_category_posts')->withTimestamps();
         }
 
         public function listItems($params = null, $options = null)
         {
             $result = null;
 
-            if ($options['task'] == 'admin-list-items') {
-                $query = $this->with('user')->orderBy('id', 'desc');
+            if ($options['task'] == 'ad-list-items') {
+                $query = $this->with('author')->orderBy('id', 'desc');
 
                 if ($params['filter']['status'] !== "all") {
                     $query->where('status', '=', $params['filter']['status']);
@@ -64,8 +53,8 @@
                     ->where('id', $params['id'])->first();
             }
             // Get list categories form
-            if ($options['task'] == 'get-list-category-form') {
-                $query = $this->select('id', 'name')->where('_lft', '<>', NULL)
+            if ($options['task'] == 'ad-list-category-form') {
+                $query = $this->select('id', 'name')
                     ->withDepth()
                     ->defaultOrder();
 
@@ -88,8 +77,7 @@
                     ->having('depth', '>', 0)
                     ->defaultOrder()
                     ->get()
-                    ->toTree()
-                    ->toArray();
+                    ->toTree()->toArray();
             }
 
             return $result;
@@ -115,7 +103,7 @@
         public function countItems($params = null, $options = null)
         {
             $result = null;
-            if ($options['task'] == 'admin-count-items-group-by-status') {
+            if ($options['task'] == 'ad-count-items-group-by-status') {
                 $query  = $this->where('id', '>', 1)
                     ->groupBy('status')
                     ->select(DB::raw('status , COUNT(id) as count'))

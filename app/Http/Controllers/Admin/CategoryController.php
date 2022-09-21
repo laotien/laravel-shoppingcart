@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryUpdateRequest as MainRequest;
-use App\Models\Category as MainModel;
+use App\Models\NewsCategory as MainModel;
 
 class CategoryController extends BaseController
 {
@@ -26,8 +26,9 @@ class CategoryController extends BaseController
     {
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
 
-        $items            = $this->model->listItems($this->params, ['task' => 'admin-list-items']);
-        $itemsStatusCount = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
+        $items            = $this->model->listItems($this->params, ['task' => 'ad-list-items']);
+        $itemsStatusCount = $this->model->countItems($this->params, ['task' => 'ad-count-items-group-by-status']); // [ ['status', 'count']]
+        //dd($items);
 
         return view($this->pathViewController . 'index', [
             'params'           => $this->params,
@@ -44,7 +45,8 @@ class CategoryController extends BaseController
             $this->params["id"] = $request->id;
             $item = $this->model->getItems($this->params, ['task' => 'get-item']);
         }
-        $item['category'] = $this->model->getItems($this->params, ['task' => 'get-list-category-form']);
+        $item['category'] = $this->model->getItems($this->params, ['task' => 'ad-list-category-form']);
+        //dd($item['category']);
 
         return view($this->pathViewController . 'form', compact('item'));
     }

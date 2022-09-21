@@ -10,7 +10,7 @@
                 ['name' => 'Create', 'class' => 'active'],
             ],
             'edit'    => [
-                ['name' => 'Posts', 'url' => 'posts.edit'],
+                ['name' => 'Posts', 'url' => 'posts'],
                 ['name' => 'Edit', 'class' => 'active'],
             ],
         ],
