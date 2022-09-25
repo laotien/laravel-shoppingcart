@@ -1,6 +1,6 @@
 @php
 
-    $statusValue = ['publish' => config('temp.template.status.published.name'), 'draft' => config('temp.template.status.draft.name')];
+    $statusValue = ['published' => config('temp.template.status.published.name'), 'draft' => config('temp.template.status.draft.name')];
     if (isset($item['id'])) {
 		$pageTitle = "Edit: " . $item['name'];
 		$breadcrumbs = config('breadcrumbs.posts.edit');
@@ -31,12 +31,12 @@
                     </div>
                     <div class="mb-3">
                         {!! Form::label('description', 'Description', ['class' => 'form-label']) !!}
-                        {!! Form::textarea('description', old('description', @$item['description']), ['class' => 'form-control', 'rows' => 3, 'maxlength' => 100, 'placeholder' => __('Must enter minimum of a 100 characters')]) !!}
+                        {!! Form::textarea('description', old('description', @$item['description']), ['class' => 'form-control', 'rows' => 3, 'maxlength' => 400, 'placeholder' => __('Must enter minimum of a 100 characters')]) !!}
                     </div>
 
                     <div class="mb-3">
-                        {!! Form::label('ckeditor', 'Content', ['class' => 'form-label']) !!}
-                        <div id="ckeditor-classic">{{ @$item['content'] }}</div>
+                        {!! Form::label('content', 'Content', ['class' => 'form-label']) !!}
+                        {!! Form::textarea('content', old('content', @$item['content']), ['class' => 'form-control', 'id' => 'ckeditor-classic']) !!}
                     </div>
                 </div>
             </div>
@@ -70,11 +70,12 @@
                 </div>
                 <div class="card-body">
                     @php
-                        $xhtmlCategory = '';
+                       $xhtmlCategory = '';
                        if (count($categories) > 0) {
-                            $ids = $item->categories->pluck('id')->toArray();
-                            $xhtmlCategory .= '<ul class="form-check list-unstyled">';
-                            \App\Helpers\Template::categories($categories, $ids, $xhtmlCategory);
+						   $xhtmlCategory .= '<ul class="form-check list-unstyled">';
+						   (isset($item['id'])) ? $ids = $item->categories->pluck('id')->toArray() : $ids = [];
+
+						   \App\Helpers\Template::categories($categories, $ids, $xhtmlCategory);
                        }
                        $xhtmlCategory .= '</ul>';
                     @endphp

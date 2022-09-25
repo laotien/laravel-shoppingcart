@@ -74,12 +74,8 @@
          */
         public static function categories($categories, &$ids, &$xhtml) :void
         {
-            $checked = '';
             foreach ($categories as $category) {
-                foreach($ids as $id) {
-                    ($category['id'] == $id ? $checked = 'checked' : $checked = '');
-                }
-
+                $checked = in_array($category['id'], $ids) ? 'checked' : '';
                 if (count($category['children']) > 0) {
                     $xhtml .= sprintf('<li value="%s">
                         <input class="form-check-input" %s type="checkbox"  value="%s" name="categories[]">

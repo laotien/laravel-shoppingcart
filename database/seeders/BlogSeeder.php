@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\NewsCategory;
-use App\Models\NewsPosts;
+use App\Models\PostsCategory;
+use App\Models\Posts;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -51,7 +51,7 @@ class BlogSeeder extends Seeder
             ],
         ];
 
-        NewsCategory::create($categories);
+        PostsCategory::create($categories);
 
         // Insert Post
         $posts = [
@@ -138,7 +138,7 @@ From the iconic to the unexpected, the city of San Francisco never ceases to sur
             $item['image'] = 'news/' . ($index + 1) . '.jpg';
             $item['description'] = $this->faker->text();
 
-            $post = NewsPosts::create($item);
+            $post = Posts::create($item);
 
             $post->categories()->sync([
                 $this->faker->numberBetween(1, 4),

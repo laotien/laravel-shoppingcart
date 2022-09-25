@@ -13,7 +13,7 @@
         protected $table = 'news_posts';
         protected $slugField = 'slug';
         protected $slugFromField = 'name';
-        protected $crudNotAccepted = [];
+        protected $crudNotAccepted = ['_token', 'categories', 'tags'];
 
         protected $fillable = ['name', 'description', 'content', 'slug', 'status', 'image', 'is_featured', 'views',];
 
@@ -78,11 +78,10 @@
             }
 
             if ($options['task'] == 'ad-edit-item') {
-                $parent = $this->findOrFail($params['parent_id']);
-                $query  = $current = $this->findOrFail($params['id']);
-
-                $query->update($this->prepareParams($params));
-                if ($current->parent_id != $params['parent_id']) $query->prependToNode($parent)->save();
+                $postUpdate = $this->where('id', $params['id'])->first();
+                $postUpdate->update($this->prepareParams($params));
+                // sync categories
+                $postUpdate->categories()->sync($params['categories']);
             }
         }
 
