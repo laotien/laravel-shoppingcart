@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CategoryUpdateRequest as MainRequest;
 use App\Models\NewsCategory as MainModel;
 
-class CategoryController extends BaseController
+class PostsCategoryController extends BaseController
 {
     protected $params = [];
     protected $controllerName;

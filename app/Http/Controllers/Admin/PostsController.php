@@ -37,7 +37,7 @@
             ]);
         }
 
-        public function form(Request $request, NewsCategory $category)
+        public function form(Request $request, PostCategory $category)
         {
             $item = null;
 
